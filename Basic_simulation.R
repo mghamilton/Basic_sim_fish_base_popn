@@ -1,8 +1,8 @@
 #Matthew Hamilton
 #26/04/19
 
-#Basic simulation of base population from founders (one sampled founder population, no fixed effects,
-#no half sibs, no inbreeding, no inbreeding depression, no missing data, 
+#Very basic simulation of genetic parameter estimations from a base population from unrelated founders 
+#(one sampled founder population, no fixed effects, no half sibs, no inbreeding, no inbreeding depression, no missing data, 
 #same number of indivduals per family etc)
 
 ###############################################################################################
@@ -12,9 +12,9 @@
 n_fams          <- 20 #set number of full-sib families in base population
 n_indiv_per_fam <- 50 #number of individuals per family
 
-sim_reps <- 100 #number of times simulation is repeated
+sim_reps        <- 100 #number of times simulation is repeated
 
-#true genetic parameters 
+#true genetic parameters
 true_additive_var_1    <- 0.3
 true_additive_var_2    <- 0.5
 true_additive_cor_1_2  <- 0.8
@@ -22,13 +22,19 @@ true_additive_cor_1_2  <- 0.8
 #Note that dominance is not fitted in the model for asreml analyses below as the additive and dominance effects cannot be partitioned in this case (i.e. no half sibs)
 #True parameter values can be entered to examine their impact on estimates of additive effects
 #Enter a very small value in the place of zero (e.g. 0.0000001)
-true_dominance_var_1   <- 0.2 
+true_dominance_var_1   <- 0.2
 true_dominance_var_2   <- 0.0000001
 true_dominance_cor_1_2 <- 0.0000001
 
 true_residual_var_1    <- 0.5
-true_residual_var_2    <- 0.3
+true_residual_var_2    <- 0.5
 true_residual_cor_1_2  <- 0.8
+
+###############################################################################################
+###############################################################################################
+#DO NOT MODIFY BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING
+###############################################################################################
+###############################################################################################
 
 ###############################################################################################
 #load packages
@@ -70,7 +76,7 @@ R <- matrix(c(true_residual_var_1,  true_residual_covar_1_2,  true_residual_cova
 #generate additive and dominance relationship matrices
 #http://finzi.psych.upenn.edu/library/nadiv/html/warcolak.html
 A_matrix <- makeA(ped)
-A_matrix_inv <- asreml.Ainverse(dat[,1:3])$ginv  
+A_matrix_inv <- asreml.Ainverse(ped[,1:3])$ginv  
 
 D_matrix     <- makeD(ped)
 D_matrix_inv <- D_matrix$listDinv
